@@ -4,10 +4,10 @@ import java.io.File;
 import javax.imageio.ImageIO;
 class Main{
     public static void main(String[] args) {
-        int width = 1000;
-        int height = 1000;
+        int width = 4000;
+        int height = 4000;
         BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
-        DrawingCanvas dc = new DrawingCanvas(width,height,-2,.5,-1.25,1.25,  50);
+        DrawingCanvas dc = new DrawingCanvas(width,height,-1.3497477362596 ,-1.3495952819014,  0.06142806962796, 0.06158052398616,500);
         try{
             Graphics2D graphics2D = image.createGraphics();
             dc.render(graphics2D);

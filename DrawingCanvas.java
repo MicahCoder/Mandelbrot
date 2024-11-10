@@ -1,4 +1,5 @@
 import java.awt.*;
+import java.util.Random;
 
 public class DrawingCanvas{
     private final int width;
@@ -20,13 +21,16 @@ public class DrawingCanvas{
     protected void render(Graphics2D g){
         // Color[] colors = new Color[] {new Color(0,5,71),new Color(255,255,255),new Color(255,167,7),new Color(0,0,0),new Color(0,30,147),new Color(124,124,124),new Color(0,0,0)};
         // float[] positions = new float[] {0,.01f,.015f,.02f,.025f,.075f,1};
+        //Color color1 = new Color(3, 101, 110);
+        //Color color2 = new Color(23, 173, 138);
         for(int px = 0; px<width;px++){
             for(int py = 0; py<height;py++){
                 float lightness = (float)mandlebrotValue(px, py);
                 //g.setColor(HSV(lightness));
                 //g.setColor(simpleGradient(23, 255, 240, lightness));
                 //g.setColor(complexGradient(colors, positions, lightness));
-                g.setColor(gradient(new Color(0,8,106),new Color(0,150,0),0,1,lightness));
+                //g.setColor(gradient(color1,color2,0,1,lightness));
+                g.setColor(randomColor(lightness*maxIterations));
                 g.drawLine(px,py,px,py);
             }
         }
@@ -80,5 +84,12 @@ public class DrawingCanvas{
         float b = (start.getBlue()*startWeight + end.getBlue()*endWeight)/255f;
         float a = (start.getAlpha()*startWeight + end.getAlpha()*endWeight)/255f;
         return new Color(r,g,b,a);
+    }
+    private Color randomColor(float seed){
+        Random random = new Random((long)seed);
+        if(seed == 0){
+            return new Color(0,0,0);
+        }
+        return new Color(Color.HSBtoRGB(256*random.nextFloat(),1f,random.nextFloat()));
     }
 }
