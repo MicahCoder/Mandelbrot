@@ -18,11 +18,15 @@ public class DrawingCanvas{
         rangeLength = yMax-yMin;
     }
     protected void render(Graphics2D g){
+        // Color[] colors = new Color[] {new Color(0,5,71),new Color(255,255,255),new Color(255,167,7),new Color(0,0,0),new Color(0,30,147),new Color(124,124,124),new Color(0,0,0)};
+        // float[] positions = new float[] {0,.01f,.015f,.02f,.025f,.075f,1};
         for(int px = 0; px<width;px++){
             for(int py = 0; py<height;py++){
                 float lightness = (float)mandlebrotValue(px, py);
-                g.setColor(HSV(lightness));
+                //g.setColor(HSV(lightness));
                 //g.setColor(simpleGradient(23, 255, 240, lightness));
+                //g.setColor(complexGradient(colors, positions, lightness));
+                g.setColor(gradient(new Color(0,8,106),new Color(0,150,0),0,1,lightness));
                 g.drawLine(px,py,px,py);
             }
         }
@@ -57,5 +61,24 @@ public class DrawingCanvas{
     }
     private Color simpleGradient(float r, float g, float b,float lightness){
         return new Color(r*lightness/255,g*lightness/255,b*lightness/255);
+    }
+    private Color complexGradient(Color[] colors, float[] positions, float position){
+        Color out = colors[0];
+        for(int i =1; i<positions.length;i++){
+            if(position > positions[i-1] && position<=positions[i]){
+                out = gradient(colors[i-1],colors[i],positions[i],positions[i-1],position);
+            }
+        }
+        return out;
+    }
+    private Color gradient(Color start, Color end, float startX, float endX, float position){
+        float length = endX - startX;
+        float startWeight = (position-startX)/length;
+        float endWeight = 1f-startWeight;
+        float r = (start.getRed()*startWeight + end.getRed()*endWeight)/255f;
+        float g = (start.getGreen()*startWeight + end.getGreen()*endWeight)/255f;
+        float b = (start.getBlue()*startWeight + end.getBlue()*endWeight)/255f;
+        float a = (start.getAlpha()*startWeight + end.getAlpha()*endWeight)/255f;
+        return new Color(r,g,b,a);
     }
 }
